@@ -1,0 +1,237 @@
+<div id="splash_content">
+  
+  
+<div id="spash_info_above">
+<span class="left the_weather"></span>
+<span class="center splash_media_title"><a href="{{ section.settings.media_link }}">{{ section.settings.media_title }}</a></span>
+<span class="right">NYC</span>
+</div>
+
+<table id="wrapper">
+  <tr>
+    <td>
+
+      {% if section.settings.media_type contains 'video_link' %}
+        {% if section.settings.video_link %}
+        <div class="video-wrapper">
+          {% if section.settings.video_link.type == "youtube" %}
+            <iframe src="//www.youtube.com/embed/{{ section.settings.video_link.id }}?autoplay=1&showinfo=0&loop=1&controls=0&rel=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+          {% endif %}
+          {% if section.settings.video_link.type == "vimeo" %}
+            <iframe src="//player.vimeo.com/video/{{ section.settings.video_link.id }}?color={{ settings.color_secondary | remove: "#" }}&byline=0&portrait=0&badge=0" width="850" height="480" frameborder="0" allowfullscreen></iframe>
+          {% endif %}
+        </div>
+        {% endif %}
+      {% endif %}
+
+      {% if section.settings.media_type contains 'embed' %}
+        {% if section.settings.embed %}
+          <video id='vid' autoplay="autoplay" loop="loop" muted="true" playsinline style="height: 28.125vw; margin: 0 auto; display: flex">
+          <source src="{{ section.settings.embed }}" type="video/mp4">
+          Your browser does not support the video tag.
+          </video>
+          <script>
+
+          $(window).on('load', function() {
+            document.getElementById('vid').play();
+          });
+          </script>
+        {% endif %}
+      {% endif %}
+
+
+      {% if section.settings.media_type contains 'image' %}
+        {% if section.settings.splash_image != blank  %}
+        <div class="photo-wrapper" style="background-image: url('{{ section.settings.splash_image | img_url: '1200x' }}')">
+        </div>
+        {% endif %}
+      {% endif %}
+
+
+    </td>
+  </tr>
+</table>
+
+<div id="spash_info_below">
+<span class="left" id="the_time"></span>
+<span class="right" id="the_date"></span>
+</div>
+  
+</div>
+
+<!-- removed footer from rest of pages- just want on home page -->
+
+ <div id="footer">
+    
+  <ul id="footer_nav_wrapper">
+    {% for link in linklists[section.settings.footer_nav].links %}
+      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+    {% endfor %}
+  </ul>
+
+  
+  <div id="other_wrapper">
+  
+    <div id="insta_link"> 
+      		<a target="_blank" href=http://www.instagram.com/fallriskinc/> <img height="28" width="28" src="{{ 'my-button.png' | asset_url }}" alt=""> </a>
+	
+    </div>
+    
+    <div id="footer_newsletter">
+
+        {% include 'newsletter' %}
+
+     </div>
+
+   </div>
+</div>
+
+
+<script>
+function update() {
+  $('#the_time').html(moment().format('H:mm:ss A'));
+}
+
+setInterval(update, 1000);
+
+var date = moment().format("MMMM Do, YYYY");
+$('#the_date').append(date);
+
+
+</script>
+
+
+  
+
+{% schema %}
+{
+  "name": {
+    "en": "Splash Page"
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": {
+        "en": "Title"
+      }
+    },
+    {
+      "type": "text",
+      "id": "media_title",
+      "label": {
+        "en": "Splash Page Title Text"
+      },
+      "default": {
+        "en": "Announce something here"
+      }
+    },
+    {
+      "type": "url",
+      "id": "media_link",
+      "label": {
+        "en": "Splash Page Title Link"
+      }
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Media Type"
+      }
+    },
+    {
+     "type": "radio",
+     "id": "media_type",
+     "options": [
+        { "value": "video_link", "label": "Youtube Link"},
+        { "value": "embed", "label": "Direct URL Embed"},
+        { "value": "image", "label": "Image"},
+        { "value": "livestream", "label": "Livestream"}
+     ],
+     "label": "Media Type"
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Video Link"
+      }
+    },
+    {
+      "type": "video_url",
+      "id": "video_link",
+      "label": {
+        "de": "Videolink",
+        "en": "Youtube link",
+        "es": "Enlace de video",
+        "fr": "Lien de la vidéo",
+        "it": "Link video",
+        "ja": "ビデオリンク",
+        "pt-BR": "Link do vídeo"
+      },
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Video Link"
+      }
+    },
+    {
+      "type": "text",
+      "id": "embed",
+      "label": {
+        "de": "Videolink",
+        "en": "Direct URL Embed",
+        "es": "Enlace de video",
+        "fr": "Lien de la vidéo",
+        "it": "Link video",
+        "ja": "ビデオリンク",
+        "pt-BR": "Link do vídeo"
+      }
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Image"
+      }
+    },
+    {
+      "type": "image_picker",
+      "id": "splash_image",
+      "label": {
+        "de": "Foto",
+        "en": "Image",
+        "es": "Imagen",
+        "fr": "Image",
+        "it": "Immagine",
+        "ja": "画像",
+        "pt-BR": "Imagem"
+      },
+      "info": {
+        "de": "Breite mindestens 970 Pixel",
+        "en": "970px wide minimum",
+        "es": "970px de ancho mínimo",
+        "fr": "970 px minimum",
+        "it": "Larghezza minima: 970 px",
+        "ja": "最小幅970ピクセル",
+        "pt-BR": "Mínimo de 970px de largura"
+      }
+    },
+    {
+      "type": "url",
+      "id": "splash_image_link",
+      "label": {
+        "de": "Bild-Link",
+        "en": "Image link",
+        "es": "Enlace de imagen",
+        "fr": "Lien vers l'image",
+        "it": "Link immagine",
+        "ja": "画像リンク",
+        "pt-BR": "Link da imagem"
+      }
+    }
+  ]
+}
+{% endschema %}

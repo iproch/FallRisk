@@ -1,0 +1,53 @@
+<div id="footer">
+    
+
+  <ul id="footer_nav_wrapper">
+    {% for link in linklists[section.settings.footer_nav].links %}
+      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+    {% endfor %}
+  </ul>
+
+  
+  <div id="other_wrapper">
+  
+    <div id="insta_link"> 
+      		<a target="_blank" href=http://www.instagram.com/fallriskinc/> <img height="55" width="55" src="{{ 'my-instagram-button.png' | asset_url }}" alt=""> </a>
+	
+    </div>
+    
+    <div id="footer_newsletter">
+
+        {% include 'newsletter' %}
+
+
+     </div>
+
+   </div>
+
+    
+  
+</div>
+
+
+{% schema %}
+{
+  "name": {
+    "en": "Footer"
+  },
+  "settings": [
+
+    {
+      "type": "header",
+      "content": {
+        "en": "Footer Navigation"
+      }
+    },
+    {
+      "type": "link_list",
+      "id": "footer_nav",
+      "label": "Footer Navigation"
+    }
+
+  ]
+}
+{% endschema %}

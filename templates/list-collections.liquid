@@ -1,0 +1,225 @@
+<!-- /templates/list-collections.liquid -->
+
+<!-- {% section 'list-collections-template' %} -->
+
+<div id="shop_filter">
+  <h1>Filter <span class="mobile_collection_filter_close">&#215;</span></h1>
+
+  <ul class="parent">
+    {% for link in linklists.collections-menu.links %}
+      {% assign collection = link.object %}
+      <li  class="parent"{% if link.active %}class="active {% if link.child_active %}child-active{% endif %}"{% endif %}><a class="parent"  id="{{ collection.id }}">{{ link.title }}</a>
+        {% if link.links != blank %}
+          <ul class="child">
+            {% for child_link in link.links %}
+            {% assign collection = child_link.object %}
+            <li {% if child_link.active %}class="active {% if child_link.child_active %}child-active{% endif %}"{% endif %}><a id="{{ collection.id }}">{{  child_link.title   | remove:  link.title  }} </a>
+            {% if child_link.links != blank %}
+              <ul class="grandchild">
+              {% for grandchild_link in child_link.links %}
+              {% assign collection = grandchild_link.object %}
+                <li {% if grandchild_link.active %}class="active {% if grandchild_link.child_active %}child-active{% endif %}"{% endif %}><a id="{{ collection.id }}" >{{ grandchild_link.title }}</a></li>
+              {% endfor %}
+              </ul>
+            {% endif %}
+            </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+
+</div>
+
+<div id="shop_collections">
+
+  <h2><span class="mobile_collection_filter">&#8629;</span>Filter</h2>
+
+  <div id="selected_collection"></div>
+
+  <div id="shop_collections_all">
+
+    {% for link in linklists.collections-menu.links %}
+
+      {% if link.links != blank %}
+        {% if link.type == 'collection_link' %}
+          {% assign collection = link.object %}
+            <span class="parent_collection_wrapper {{ link.title }}" id="{{ collection.id }}-u">
+              {% for childlink in link.links %}
+                {% assign collection = childlink.object %}
+                  {% if collection.products.size > 0 %}
+                    <span class="child_collection_wrapper {{ childlink.title }}" id="{{ collection.id }}-u">
+                      <h1> {{ childlink.title }}</h1>
+                    <span class="collection_items_wrapper">
+                      {% for product in collection.products %}
+                        {% assign allTags = product.tags | join:',' %}
+                          <li>
+                            <a href="{{ product.url }}"><img class="product_front" src="{{  product.images[0] | product_img_url: 'medium' }}" alt="{{ product.images[0].alt | escape  }}" />
+                              <div class="hidden">
+                                <div class="caption">
+                                  {% if product.template_suffix != 'call-to-order' %}
+                                    {% if product.available %}
+                                      {% for variant in product.variants %}
+                                        {% if variant.inventory_management == "shopify" and variant.inventory_quantity > 0 %}
+                                          {{ variant.title }}
+                                        {% elsif variant.inventory_quantity == 0 %}
+                                          <span class="sold_out">{{ variant.title }}</span>
+                                        {% endif %}
+                                      {% endfor %}
+                                    {% else %}
+                                        Sold out.<br>
+                                        Notify when avaible.
+                                    {% endif %}
+                                  {% else %}
+                                    Call 212-982-RISK<br>To Order
+                                  {% endif %}
+                                </div><!-- end of .caption -->
+                              </div><!-- end of .hidden -->
+                            </a>
+                            <br>
+                            {% if product.template_suffix != 'call-to-order' %}
+                              <a class="shop-now" href="{{ product.url }}">{{ product.price | money  }}</a>
+                            {% endif %}
+                            <br>
+                          </li>
+                      {% endfor %}
+                    </span>
+                </span>
+              {% endif %}
+            {% endfor %}
+          </span>
+        {% endif %}
+      {% else %}
+
+        {% for link in linklists.collections-menu.links %}
+        {% assign collection = link.object %}
+
+        {% if collection.products.size > 0 %}
+          <span class="child_collection_wrapper {{ childlink.title }}" id="{{ collection.id }}-u">
+          <h1> {{ link.title }}</h1>
+          <span class="collection_items_wrapper">
+          {% for product in collection.products %}
+            {% assign allTags = product.tags | join:',' %}
+              <li>
+              <a href="{{ product.url }}"><img class="product_front" src="{{  product.images[0] | product_img_url: 'medium' }}" alt="{{ product.images[0].alt | escape  }}" />
+                <div class="hidden">
+                  <div class="caption">
+
+                    {% if product.template_suffix != 'call-to-order' %}
+
+                      {% if product.available %}
+                        {% for variant in product.variants %}
+                          {% if variant.inventory_management == "shopify" and variant.inventory_quantity > 0 %}
+                            {{ variant.title }}
+                          {% elsif variant.inventory_quantity == 0 %}
+                           <span class="sold_out">{{ variant.title }}</span>
+                          {% endif %}
+                        {% endfor %}
+
+                      {% else %}
+                        Sold out.<br>
+                        Notify when avaible.
+                      {% endif %}
+
+                    {% else %}
+                      Call 212-982-RISK<br>To Order
+                    {% endif %}
+
+
+                  </div><!-- end of .caption -->
+                </div><!-- end of .hidden -->
+              </a>
+
+
+              <br>
+              {% if product.template_suffix != 'call-to-order' %}
+              <a class="shop-now" href="{{ product.url }}">{{ product.price | money  }}</a>
+              {% endif %}
+              <br>
+              </li>
+          {% endfor %}
+          </span>
+          </span>
+          {% endif %}
+          {% endfor %}
+      {% endif %}
+      {% break %}
+    {% endfor %}
+
+  </div>
+
+</div>
+
+
+<script>
+
+$( document ).ready(function() {
+
+
+
+  $("#shop_filter a").click(function(evt){
+
+          $("#shop_filter li a.selected_nav").removeClass("selected_nav");
+          $(this).addClass('selected_nav');
+
+          // store collection IDs of collection selected & of parent collection
+          var collection = $(this).attr("id");
+          var parent_collection = $(this).closest('li.parent').children('a.parent').attr('id');
+          console.log("clicked: c|" + collection + "  p|" + parent_collection);
+
+
+          // if selection container has contents unhide it's original verision and clear the container //
+          if ( $('#selected_collection').children().length > 0 ) {
+              var current = $("#selected_collection span.child_collection_wrapper").first().attr("id").slice(0,-2);
+              current = '#' + current + '-u';
+              $('#shop_collections_all ' + current ).show();
+              $('#selected_collection').empty();
+          };
+
+          $('#shop_collections_all #' + parent_collection + '-u' ).clone().appendTo("#selected_collection");
+          $('#shop_collections_all #' + parent_collection + '-u' ).hide();
+          $("#selected_collection span").first().attr("id", parent_collection + '-a');
+
+          $( "#selected_collection .child_collection_wrapper" ).each(function() {
+
+            console.log($(this).attr("id"));
+            var id = $(this).attr("id").slice(0,-2);
+
+            newId = id + '-a';
+            $(this).attr("id", newId );
+
+            if ( id == collection ) {
+              $( "#selected_collection .parent_collection_wrapper" ).prepend( $( this ) );
+            }
+
+          });
+
+
+          //var childId = $("#selected_collection span .child_collection_wrapper").attr("id")
+          //$("#selected_collection span .child_collection_wrapper").attr("id", childID + '-a');
+        //  $( '#selected_collection #' + collection + '-a').prependTo( $("#selected_collection #" + parent_collection + "-a") );
+
+
+	  });
+
+
+    if($(window).width() < 768 ) {
+
+      $( "#shop_collections h2" ).click(function() {
+        $( "#shop_filter" ).show();
+      });
+
+      $( "#shop_filter a" ).click(function() {
+        $( "#shop_filter" ).hide();
+      });
+
+      $( ".mobile_collection_filter_close" ).click(function() {
+        $( "#shop_filter" ).hide();
+      });
+
+    }
+
+});
+
+</script>

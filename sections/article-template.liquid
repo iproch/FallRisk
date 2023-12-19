@@ -1,0 +1,99 @@
+<!-- /templates/article.liquid -->
+{% if blog.handle == 'news' %}
+
+<article class="article news_article" itemscope itemtype="http://schema.org/Article">
+
+  <header>
+    <h1>{{ article.title }}</h1>
+    <h2 class="news_article_date">{{ article.created_at | date: "%m.%d.%Y" }}</h2>
+  </header>
+
+    <div class="featured_image">
+    <img src="{{ article.image.src | img_url: '1024x1024' }}" alt="{{ article.image.alt }}">
+    </div>
+
+    {% if article.excerpt %}
+    <div class="excerpt">
+    <span>{{ article.excerpt }}</span>
+    </div>
+    {% endif %}
+
+    <div class="article_content">
+    {{ article.content }}
+    </div>
+
+    <div class="article_images">
+    </div>
+
+    <h1 class="blog_archive_title"><a href="/blogs/news">Archive</a></h1>
+    <div class="blog_archive">
+    <ul>
+    {% for article in blog.articles %}
+        <li><a href="{{ article.url }}"><b>{{ article.title }}</b><br>{{ article.created_at | date: "%m.%d.%Y" }}</a></li>
+    {% endfor %}
+    </ul>
+    </div>
+
+    <script type='text/javascript'>
+    $(document).ready(function() {
+
+      $('.article_content').find('img').each(function () {
+          $(this).detach().appendTo('.article_images');
+      });
+
+      $('.article_content').remove();
+
+    });
+    </script>
+
+{% endif %}
+
+{% if blog.handle == 'lookbooks' %}
+
+<article class="article news_article" itemscope itemtype="http://schema.org/Article">
+
+  <header>
+    <h1 style="text-align: center; padding-top: 50px;">{{ article.title }}</h1>
+  </header>
+
+    <div class="featured_image" style="padding-top: 50px;">
+    <img src="{{ article.image.src | img_url: '1024x1024' }}" alt="{{ article.image.alt }}">
+    </div>
+
+    <div class="excerpt">
+    <span>{{ article.excerpt }}</span>
+    </div>
+
+    <div class="article_content">
+    {{ article.content }}
+    </div>
+
+    <div class="article_images">
+    </div>
+
+    <h1 class="blog_archive_title"><a href="/blogs/lookbooks">Archive</a></h1>
+    <div class="blog_archive">
+    <ul>
+    {% for article in blog.articles %}
+        <li><a href="{{ article.url }}"><b>{{ article.title }}</b><br>{{ article.created_at | date: "%m.%d.%Y" }}</a></li>
+    {% endfor %}
+    </ul>
+    </div>
+
+    <script type='text/javascript'>
+    $(document).ready(function() {
+
+      $('.article_content').find('img').each(function () {
+          $(this).detach().appendTo('.article_images');
+      });
+
+      $('.article_content').remove();
+
+    });
+    </script>
+
+{% endif %}
+
+
+
+</article>

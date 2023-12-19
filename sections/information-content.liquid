@@ -1,0 +1,149 @@
+{% for block in section.blocks %}
+    {% case block.type %}
+
+    {% when 'header' %}
+      <h1>{{ block.settings.header }}</h1>
+
+    {% when 'c1' %}
+      <div class='page_block'>
+        <div class="c1">
+        <h2>{{ block.settings.c1_title }}</h2>
+        <p>{{ block.settings.c1_text }}</p>
+        </div>
+      </div>
+
+    {% when 'c2' %}
+      <div class='page_block'>
+        <div class="c2">
+          <div class="c2_col">
+            <h2>{{ block.settings.c2_title_1 }}</h2>
+            <p>{{ block.settings.c2_text_1 }}</p>
+          </div>
+          <div class="c2_col">
+            <h2>{{ block.settings.c2_title_2 }}</h2>
+            <p>{{ block.settings.c2_text_2 }}</p>
+          </div>
+        </div>
+      </div>
+
+    {% when 'c3' %}
+      <div class='page_block'>
+        <div class="c3">
+          <div class="c3_col">
+            <h2>{{ block.settings.c3_title_1 }}</h2>
+            <p>{{ block.settings.c3_text_1 }}</p>
+          </div>
+          <div class="c3_col">
+            <h2>{{ block.settings.c3_title_2 }}</h2>
+            <p>{{ block.settings.c3_text_2 }}</p>
+          </div>
+          <div class="c3_col">
+            <h2>{{ block.settings.c3_title_3 }}</h2>
+            <p>{{ block.settings.c3_text_3 }}</p>
+          </div>
+        </div>
+      </div>
+
+
+    {% endcase %}
+{% endfor %}
+
+
+
+{% schema %}
+  {
+    "name": "Information Page Content",
+    "blocks": [
+      {
+        "type": "header",
+        "name": "Section Divider / Title",
+        "settings": [
+          {
+            "id": "header",
+            "type": "text",
+            "label": "Section Title"
+          }
+        ]
+      },
+      {
+        "type": "c1",
+        "name": "1 Column",
+        "settings": [
+          {
+            "id": "c1_title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "c1_text",
+            "type": "textarea",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "c2",
+        "name": "2 Column",
+        "settings": [
+          {
+            "id": "c2_title_1",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "c2_text_1",
+            "type": "textarea",
+            "label": "Text"
+          },
+          {
+            "id": "c2_title_2",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "c2_text_2",
+            "type": "textarea",
+            "label": "Text"
+          }
+        ]
+      },
+      {
+        "type": "c3",
+        "name": "3 Column",
+        "settings": [
+          {
+            "id": "c3_title_1",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "c3_text_1",
+            "type": "textarea",
+            "label": "Text"
+          },
+          {
+            "id": "c3_title_2",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "c3_text_2",
+            "type": "textarea",
+            "label": "Text"
+          },
+          {
+            "id": "c3_title_3",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "c3_text_3",
+            "type": "textarea",
+            "label": "Text"
+          }
+        ]
+      }
+
+    ]
+  }
+{% endschema %}

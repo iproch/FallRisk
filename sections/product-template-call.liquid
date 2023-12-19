@@ -1,0 +1,37 @@
+<!-- /templates/product.liquid -->
+<div itemscope itemtype="http://schema.org/Product" id="ProductSection" data-section-id="{{ section.id }}" data-section-type="product-template" data-image-zoom-type="{{ section.settings.product_image_zoom_type }}" data-show-extra-tab="{{ section.settings.show_extra_tab }}" data-extra-tab-content="{{ section.settings.extra_tab_content }}" data-cart-enable-ajax="{{ settings.cart_enable_ajax }}" data-enable-history-state="true">
+
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+  {% comment %}
+    Get first variant in stock, or deep linked one
+  {% endcomment %}
+  {% assign current_variant = product.selected_or_first_available_variant %}
+  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+
+  <div id="product_image_box">
+    {% for image in product.images %}
+    <img src="{{ image.src | img_url: '1024x1024' }}" alt="{{ image.alt | escape }}">
+    {% endfor %}
+  </div>
+
+  <div id="product_info_box">
+
+    <h1>{{ product.title }}</h1>
+
+    <div id="product_description">
+      {{ product.description  }}
+    </div>
+
+  </div>
+
+
+
+{% unless product == empty %}
+  <script type="application/json" data-product-json>
+    {{ product | json }}
+  </script>
+{% endunless %}

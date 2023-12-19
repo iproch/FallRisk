@@ -1,0 +1,84 @@
+
+      <div class='got_risk_prompt'>
+        <h1>{{ section.settings.gr_title }}</h1>
+        <p>{{ section.settings.gr_prompt }}</p>
+        <ul class="gr_contact">
+          <li>
+            <img src="{{ section.settings.contact_icon_1 | img_url: '25px' }}"><br>
+            {{ section.settings.gr_contact_1 }}
+          </li>
+          <li>
+            <img src="{{ section.settings.contact_icon_2 | img_url: '25px' }}"><br>
+            {{ section.settings.gr_contact_2 }}
+          </li>
+          <li>
+            <img src="{{ section.settings.contact_icon_3 | img_url: '25px' }}"><br>
+            {{ section.settings.gr_contact_3 }}
+          </li>
+        </ul>
+      </div>
+
+
+
+
+{% schema %}
+{
+  "name": {
+    "en": "Got Risk Prompt"
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": {
+        "en": "Prompt"
+      }
+    },
+    {
+      "type": "text",
+      "id": "gr_title",
+      "label": "Got Risk Title"
+    },
+    {
+      "type": "html",
+      "id": "gr_prompt",
+      "label": "Got Risk Prompt"
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Contact Details"
+      }
+    },
+    {
+      "type": "image_picker",
+      "id": "contact_icon_1",
+      "label": "Contact 1 Icon"
+    },
+    {
+      "type": "text",
+      "id": "gr_contact_1",
+      "label": "Contact 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "contact_icon_2",
+      "label": "Contact 2 Icon"
+    },
+    {
+      "type": "text",
+      "id": "gr_contact_2",
+      "label": "Contact 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "contact_icon_3",
+      "label": "Contact 3 Icon"
+    },
+    {
+      "type": "text",
+      "id": "gr_contact_3",
+      "label": "Contact 3"
+    }
+  ]
+}
+{% endschema %}

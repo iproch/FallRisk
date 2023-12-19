@@ -1,0 +1,100 @@
+<!-- /templates/product.liquid -->
+<div itemscope itemtype="http://schema.org/Product" id="ProductSection" data-section-id="{{ section.id }}" data-section-type="product-template" data-image-zoom-type="{{ section.settings.product_image_zoom_type }}" data-show-extra-tab="{{ section.settings.show_extra_tab }}" data-extra-tab-content="{{ section.settings.extra_tab_content }}" data-cart-enable-ajax="{{ settings.cart_enable_ajax }}" data-enable-history-state="true">
+
+  <meta itemprop="name" content="{{ product.title }}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+
+  {% comment %}
+    Get first variant in stock, or deep linked one
+  {% endcomment %}
+  {% assign current_variant = product.selected_or_first_available_variant %}
+  {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+
+
+  <div id="product_image_box">
+    {% for image in product.images %}
+    <img src="{{ image.src | img_url: '1024x1024' }}" alt="{{ image.alt | escape }}">
+    {% endfor %}
+  </div>
+
+  <div id="product_info_box">
+
+    <h1>{{ product.title }}</h1>
+
+    <div id="product_description">
+      {{ product.description | split: '~section 2~' | first }}
+    </div>
+
+    {% if product.available %}
+
+    <div id="product_form">
+    {% form 'product', product, class:'product-form' %}
+
+
+        <h3>{{ product.price | money_with_currency }}</h3>
+
+        <select name="id" id="ProductSelect-{{ section.id }}" class="product-single__variants">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} </option>
+            {% else %}
+              <option disabled="disabled">
+                {{ variant.title }}
+              </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+
+
+
+      <div class="product-single__cart-submit-wrapper{% if section.settings.enable_payment_button %} product-single__shopify-payment-btn{% endif %}{% if section.settings.add_to_cart_width == 'full_width' %} product-form--full{% endif %}">
+        <button type="submit" name="add" id="AddToCart"class="btn product-single__cart-submit{% if section.settings.add_to_cart_width == 'full_width' %} btn--full{% endif %}{% if section.settings.enable_payment_button %} shopify-payment-btn btn--secondary{% endif %}">
+          <span id="AddToCartText">PRE-ORDER</span>
+        </button>
+        {% if section.settings.enable_payment_button %}
+          {{ form | payment_button }}
+        {% endif %}
+      </div>
+
+    {% endform %}
+  </div>
+
+  {% else %}
+
+  <div id="product_form">
+  {% form 'product', product, class:'product-form' %}
+
+
+      <h3>{{ product.price | money_with_currency }}</h3>
+
+
+
+
+
+    <div class="product-single__cart-submit-wrapper{% if section.settings.enable_payment_button %} product-single__shopify-payment-btn{% endif %}{% if section.settings.add_to_cart_width == 'full_width' %} product-form--full{% endif %}">
+      <button disabled type="submit" name="add" class="btn product-single__cart-submit{% if section.settings.add_to_cart_width == 'full_width' %} btn--full{% endif %}{% if section.settings.enable_payment_button %} shopify-payment-btn btn--secondary{% endif %}">
+        <span id="AddToCartText">SOLD OUT</span>
+      </button>
+    </div>
+
+  {% endform %}
+</div>
+
+
+  {% endif %}
+
+
+  <div id="product_description_more">
+    {{ product.description | split: '~section 2~' | last }}
+  </div>
+
+</div>
+
+
+
+{% unless product == empty %}
+  <script type="application/json" data-product-json>
+    {{ product | json }}
+  </script>
+{% endunless %}

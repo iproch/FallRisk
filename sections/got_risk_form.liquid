@@ -1,0 +1,44 @@
+
+<p class="gr_form_text">{{ section.settings.gr_form_text }}</p>
+
+{% form 'contact' %}
+
+  {% if form.posted_successfully? %}
+    <p class="form--success">
+      {{ 'contact.form.post_success' | t }}
+    </p>
+  {% endif %}
+
+  {{ form.errors | default_errors }}
+
+  <label for="ContactFormMessage" class="label--hidden">{{ 'contact.form.message' | t }}</label>
+  <textarea rows="5" id="ContactFormMessage" name="contact[body]" placeholder="Share your #gotrisk testimonial...">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+
+  <input type="submit" class="btn" value="Submit">
+
+{% endform %}
+
+
+
+
+
+{% schema %}
+{
+  "name": {
+    "en": "Got Risk Form"
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": {
+        "en": "Got Risk Form"
+      }
+    },
+    {
+      "type": "html",
+      "id": "gr_form_text",
+      "label": "Got Risk Form Text"
+    }
+  ]
+}
+{% endschema %}

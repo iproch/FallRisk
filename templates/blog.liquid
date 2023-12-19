@@ -1,0 +1,115 @@
+<!-- /templates/blog.liquid -->
+{% if blog.handle == 'news' %}
+{% paginate blog.articles by 10 %}
+  <div class="news_blog">
+
+  {% for article in blog.articles | first %}
+
+      <div class="news_blog_header">
+        <h1><a href="{{ article.url }}">{{ article.title }}</a></h1>
+        <h2 class="news_article_date">{{ article.created_at | date: "%m.%d.%Y" }}</h2>
+      </div>
+
+      <div class="article_preview">
+
+            <a class="article_image" href="{{ article.url }}">
+              {{ article | img_url: '1024x1024' | img_tag: article.title }}
+            </a>
+
+            <div class="article_preview_text">
+              <span class="article_tag">
+              {% for tag in article.tags %}
+                <h2><a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}</h2>
+              {% endfor %}
+              </span>
+
+              <span class="view_article"><h2><a href="{{ article.url }}">View Post >>></a></h2></span>
+            </div>
+
+      </div>
+
+
+  {% endfor %}
+
+</div>
+
+
+
+{% if paginate.pages > 1 %}
+  <div class="pagination text-center">
+    <h2>{{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}</h2>
+  </div>
+{% endif %}
+
+
+{% endpaginate %}
+{% endif %}
+
+
+
+
+{% if blog.handle == 'lookbooks' %}
+{% paginate blog.articles by 10 %}
+  <div class="news_blog">
+
+  {% for article in blog.articles | first %}
+
+      <div class="news_blog_header">
+        <h1 style="text-align: center; padding-top: 50px;"><a href="{{ article.url }}">{{ article.title }}</a></h1>
+      </div>
+
+      <div class="article_preview" style="padding-top: 25px;">
+
+            <a class="article_image" href="{{ article.url }}">
+              {{ article | img_url: '1024x1024' | img_tag: article.title }}
+            </a>
+
+            <div class="article_preview_text">
+              <span class="article_tag">
+              {% for tag in article.tags %}
+                <h2><a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}</h2>
+              {% endfor %}
+              </span>
+
+              <span class="view_article"><h2><a href="{{ article.url }}">View Images >>></a></h2></span>
+            </div>
+
+      </div>
+
+
+  {% endfor %}
+
+</div>
+
+
+
+{% if paginate.pages > 1 %}
+  <div class="pagination text-center">
+    <h2>{{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}</h2>
+  </div>
+{% endif %}
+
+{% endpaginate %}
+{% endif %}
+
+
+
+
+{% if blog.handle == 'got-risk' %}
+
+{% section 'got_risk_prompt' %}
+{% section 'got_risk_form' %}
+
+<h1 class="got_risk_responses_header">responses</h1>
+
+<ul class="got_risk_responses">
+{% for article in blog.articles %}
+    <li>
+    <h2>{{ article.title }}</h2><br>
+    <div class="got_risk_response_image" style="background-image: url( {{ article.image.src | img_url: '720x' }} )"></div>
+    <div class="article_content"> {{ article.content }} </div>
+    </li>
+{% endfor %}
+<ul>
+
+{% endif %}

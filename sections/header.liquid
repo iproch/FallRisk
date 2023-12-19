@@ -1,0 +1,124 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div id="header">
+
+  <div id="top_nav">
+    <div id="top_nav_logo"><a href="/"><img src="{{ section.settings.logo | img_url: '25px' }}"></a></div>
+    <div id="top_nav_countdown"><a href="{{ section.settings.countdown_link }}">{{ section.settings.countdown_label }} <span class="cd_date">{{ section.settings.countdown_date }}</a></span></div>
+    <ul id="top_nav_links">
+      <i class="fa fa-bars"></i>
+        <span class="top_nav_links_mobile">
+          <i class="mobile_nav_close">&#215;</i>
+        {% for link in linklists[section.settings.header_links].links %}
+          {% if link.url contains '/cart' %}
+            <li><a href="{{ link.url }}">{{ link.title }} [{{ cart.item_count }}]</a></li>
+          {% else %}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endif %}
+        {% endfor %}
+        </span>
+    </ul>
+  </div>
+
+  <div id="ticker">
+    <span><h4><a href="{{ section.settings.ticker_link }}">{{ section.settings.ticker_text }}</a></h4></span>
+  </div>
+
+</div>
+
+
+<script>
+$( document ).ready(function() {
+
+
+  $( ".fa-bars" ).click(function() {
+    $( ".top_nav_links_mobile" ).show();
+  });
+
+  $( ".mobile_nav_close" ).click(function() {
+    $( ".top_nav_links_mobile" ).hide();
+  });
+
+
+  $("a[href*='" + location.pathname + "']").addClass( "selected_nav" )
+
+
+});
+</script>
+
+{% schema %}
+{
+  "name": {
+    "en": "Header"
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": {
+        "en": "Logo"
+      }
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Countdown"
+      }
+    },
+    {
+      "type": "text",
+      "id": "countdown_label",
+      "label": "Countdown Label"
+    },
+    {
+      "type": "text",
+      "id": "countdown_date",
+      "label": "Countdown Date"
+    },
+    {
+      "type": "url",
+      "id": "countdown_link",
+      "label": "Countdown Link"
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Main Navigation"
+      }
+    },
+    {
+      "type": "link_list",
+      "id": "header_links",
+      "label": "Main Nav Bar"
+    },
+    {
+      "type": "header",
+      "content": {
+        "en": "Ticker"
+      }
+    },
+    {
+      "type": "text",
+      "id": "ticker_text",
+      "label": {
+        "en": "Ticker Text"
+      },
+      "default": {
+        "en": "Announce something here"
+      }
+    },
+    {
+      "type": "url",
+      "id": "ticker_link",
+      "label": {
+        "en": "Ticker Link"
+      }
+    }
+
+  ]
+}
+{% endschema %}
